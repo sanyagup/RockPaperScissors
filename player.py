@@ -5,10 +5,12 @@ class Player:
     Sanya Gupta
     Represents a player in the game."""
 
-    def __init__(self, name):
+    def __init__(self, name, player_gesture):
         """Initialize a player with a name, score, and current gesture."""
         self.name = name
         self.score = 0
+        self.player_gesture = player_gesture
+
 
     def __str__(self):
         """Provides a string representation of the player showing their name and score."""
@@ -28,6 +30,12 @@ class Player:
     def get_player_score(self):
         """Gets the current score of the player."""
         return self.score
+    
+    def set_player_gesture(self, player_gesture):
+        self.player_gesture = player_gesture
+    
+    def get_player_gesture(self):
+        return self.player_gesture
 
 def main():
     """
