@@ -1,6 +1,11 @@
 import tkinter as tk
 
 class NamePrompt:
+    """
+    Sanya Gupta
+    CMSY 257
+    GUI used for the Name Prompt
+    """
     def __init__(self, root):
         self.root = root
         self.root.title("Enter Your Name")

@@ -44,33 +44,3 @@ class Round:
             return "computer"
         else:
             return "none"
-
-def main():
-    """
-    Tests the Round class checking if rounds work.
-
-    This function:
-        1. Creates Gesture and Round object
-        2. Prints intial Round details
-        3. Records and then prints results
-        4. Determines winnter and prints the winner
-
-
-    Returns:
-        None
-    """
-    # Test the Round class with sample gestures
-    round1 = Round(1, player_gesture="rock", computer_gesture="scissors")
-    gesture = Gesture()
-    print(round1)  # Print initial round details
-
-    # Record the outcome and print results
-    outcome = round1.record_outcome(gesture)
-    print(f"Round Outcome: {outcome}")
-
-    # Determine the winner based on the outcome
-    winner = round1.determine_winner()
-    print(f"Winner: {winner}")
-
-if __name__ == "__main__":
-    main()

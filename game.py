@@ -124,9 +124,11 @@ class Game:
         )
     
     def set_choice(self, choice):
+        '''Sets choice based on argument'''
         self.choice = choice
 
     def get_choice(self):
+        '''Returns choice'''
         return self.choice
 
     def start(self):

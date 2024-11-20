@@ -6,6 +6,11 @@ from computer import Computer
 from gesture import Gesture
 
 def main():
+    """
+    Sanya Gupta
+    CMSY 257
+    Starts the GUI loop and instantiates necessary objects
+    """
     root = tk.Tk()
     name_prompt = NamePrompt(root)
     root.mainloop()  # Run the event loop until a name is submitted

@@ -3,7 +3,8 @@ from gesture import Gesture
 class Player:
     """
     Sanya Gupta
-    Represents a player in the game."""
+    Represents a player in the game.
+    """
 
     def __init__(self, name, player_gesture):
         """Initialize a player with a name, score, and current gesture."""

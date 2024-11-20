@@ -37,12 +37,15 @@ class Computer:
         return self.score
     
     def increase_computer_wins(self):
+        '''Increases computer wins'''
         self.wins += 1
     
     def get_computer_wins(self):
+        '''Returns computer wins'''
         return self.wins
 
     def set_computer_score(self, score):
+        '''Changes computer score'''
         self.score = score
 
 
