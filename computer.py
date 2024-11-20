@@ -16,6 +16,7 @@ class Computer:
         """
         self.score = 0
         self.current_gesture = None
+        self.wins = 0
 
     def __str__(self):
         """Provides a string representation of the computer showing its difficulty level and score."""
@@ -34,6 +35,16 @@ class Computer:
         """
         self.score += 1
         return self.score
+    
+    def increase_computer_wins(self):
+        self.wins += 1
+    
+    def get_computer_wins(self):
+        return self.wins
+
+    def set_computer_score(self, score):
+        self.score = score
+
 
     
 def main():

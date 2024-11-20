@@ -15,10 +15,8 @@ class Game:
         self.computer = computer
         self.current_round = 1
         self.gesture = gesture
-
-    def __str__(self):
-        """String representation of the game."""
-        return f"Game: Rounds: {self.rounds}, Current Round: {self.current_round}"
+        self.choice = 'yes'
+        self.winner = ''
 
     def play_round(self):
         """
@@ -32,33 +30,40 @@ class Game:
         """
         # Player and computer choose gestures
         player_gesture = self.player.get_player_gesture()
+        self.root.update()
         computer_gesture = self.gesture.make_move()
 
-        # Create a Round instance to determine the outcome
-        round_instance = Round(self.current_round, player_gesture, computer_gesture)
-        round_outcome = round_instance.record_outcome(self.gesture)
+        if player_gesture != "":
+            self.root.update()
+            # Create a Round instance to determine the outcome
+            round_instance = Round(self.current_round, player_gesture, computer_gesture)
+            round_outcome = round_instance.record_outcome(self.gesture)
+            # Update the score based on the round outcome
+            if round_outcome == "win":
+                self.player.update_player_score()
+            elif round_outcome == "lose":
+                self.computer.update_computer_score()
 
-        self.result_label.config(
-            text=f"Round {self.current_round}: You chose {player_gesture}, Computer chose {computer_gesture}. Outcome: {round_outcome.capitalize()}."
+            # Update GUI with the result of this round
+            self.result_label.config(
+                text=f"Round {self.current_round}: You chose {player_gesture}, Computer chose {computer_gesture}. Outcome: {round_outcome.capitalize()}."
+            )
+
+            self.current_round += 1
+            self.player.set_player_gesture("")
+            self.update_score()
+            return round_outcome
+        
+    def update_score(self):
+        """Displays the current wins for both player and computer on GUI"""
+                # Update GUI with the result of this round
+        self.score_label.config(
+            text=f"Current score - Player: {self.player.get_player_score()}, Computer: {self.computer.get_computer_score()}"
         )
-
-
-        # Update the score based on the round outcome
-        if round_outcome == "win":
-            self.player.update_player_score()
-        elif round_outcome == "lose":
-            self.computer.update_computer_score()
-
-        # Update GUI with the result of this round
-        self.result_label.config(
-            text=f"Round {self.current_round}: You chose {player_gesture}, Computer chose {computer_gesture}. Outcome: {round_outcome.capitalize()}."
-        )
-
-        self.current_round += 1
-        return round_outcome
+        self.root.update()
 
     def handle_player_move(self, player_gesture):
-        """Handles the player's gesture and completes a game round."""
+        """Handles the player's gesture through buttons"""
         self.player.set_player_gesture(player_gesture)
 
     def decide_winner(self):
@@ -69,83 +74,90 @@ class Game:
             str: 'player' if the player wins, 'computer' if the computer wins, or 'tie' if it's a draw.
         """
         if self.player.get_player_score() > self.computer.get_computer_score():
+            self.player.increase_player_wins()
             return "player"
         elif self.computer.get_computer_score() > self.player.get_player_score():
+            self.computer.increase_computer_wins()
             return "computer"
         else:
             return "tie"
-
-    def update_score(self):
-        """Displays the current score for both player and computer."""
-                # Update GUI with the result of this round
-        self.result_label.config(
-            text=f"Current Score - Player: {self.player.get_player_score()}, Computer: {self.computer.get_computer_score()}"
-        )
-
-
-    def track_rounds(self):
-        """
-        Checks if the game has more rounds to play.
-
-        Returns:
-            bool: True if there are more rounds, False otherwise.
-        """
-        return self.current_round <= self.rounds
-
-    def play_again(self):
-        """
-        Asks the player if they want to play another game.
-
-        Returns:
-            bool: True if the player chooses to play again, False otherwise.
-        """
-        choice = input("Do you want to play again? (yes/no): ").strip().lower()
-        return choice == "yes"
-
+    
     def end_game(self):
         """Ends the current game session and announces the winner."""
-        winner = self.decide_winner()
-        if winner == "player":
-            print("Congratulations! You won the game!")
-        elif winner == "computer":
-            print("The computer won the game! Better luck next time.")
+        self.winner = self.decide_winner()
+        if self.winner == "player":
+            self.winner_label.config(
+            text="Congratulations! You won the game!"
+            )
+        elif self.winner == "computer":
+            self.winner_label.config(
+            text="The computer won the game! Better luck next time."
+            )
         else:
-            print("The game is a tie!")
+            self.winner_label.config(
+            text="The game is a tie!"
+            )
         
         self.display_leaderboard()
 
+    def play_again(self, flag):
+        """Handles the replay or exit decision via buttons."""
+        if flag:
+            self.set_choice('yes')
+            self.replay_label.config(text="Starting a new game!")
+            self.current_round = 1
+            self.player.set_player_score(0)
+            self.computer.set_computer_score(0)
+            self.update_score()
+            self.winner_label.config(text="")
+            self.start()
+        else:
+            self.set_choice('no')
+            self.replay_label.config(text="Thank you for playing!")
+            self.root.quit()
+            self.root.destroy()
+
     def display_leaderboard(self):
         """Displays the final score of both player and computer."""
-        print("Final Leaderboard:")
-        print(f"{self.player.name}: {self.player.get_player_score()}")
-        print(f"Computer: {self.computer.score}")
+        self.display_label.config(
+            text=f"Final Leaderboard: {self.player.name}: {self.player.get_player_wins()} Computer: {self.computer.get_computer_wins()}"
+        )
     
+    def set_choice(self, choice):
+        self.choice = choice
+
+    def get_choice(self):
+        return self.choice
+
     def start(self):
-        """Play a full game with the option to replay"""
+        """Play a full game with the option to replay."""
         self.setup_gui()
-        while True:
-            # Play each round until the total rounds are reached
-            while self.track_rounds():
-                print("in track rounds")
+        self.replay_label.config(text="Game started. Make your move.")
+
+        while self.root.winfo_exists():
+            while self.current_round <= self.rounds:
                 self.play_round()
-                self.update_score()
+                self.root.update()  # Allow GUI updates during rounds
 
-            # End the game and display the final results
-            self.end_game()
+            if self.current_round > self.rounds:
+                self.end_game()
 
-            # Check if the player wants to play again
-            if not self.play_again():
-                print("Thank you for playing!")
+            self.root.wait_variable(self.choice)
+
+            if self.get_choice() == 'no':
                 break
 
+        self.root.destroy()  # Close GUI completely
+
     def setup_gui(self):
+        """Sets up initial GUI for game"""
         # Clear the initial widgets from root
         for widget in self.root.winfo_children():
             widget.destroy()
 
         # Configure root for the new game window
         self.root.title("Rock Paper Scissors - Main Game")
-        self.root.geometry("400x300")  # Optionally resize the window
+        self.root.geometry("1000x500")  # Optionally resize the window
 
         # Welcome label
         self.label = tk.Label(self.root, text=f"Welcome, {self.player.name}! Choose your move.", font=("Helvetica", 14))
@@ -157,19 +169,38 @@ class Game:
 
         # Rock button
         self.rock_button = tk.Button(self.buttons_frame, text="Rock", command=lambda: self.handle_player_move("rock"))
+        self.root.update()
         self.rock_button.pack(side=tk.LEFT, padx=5)
 
         # Paper button
         self.paper_button = tk.Button(self.buttons_frame, text="Paper", command=lambda: self.handle_player_move("paper"))
+        self.root.update()
         self.paper_button.pack(side=tk.LEFT, padx=5)
 
         # Scissors button
         self.scissors_button = tk.Button(self.buttons_frame, text="Scissors", command=lambda: self.handle_player_move("scissors"))
+        self.root.update()
         self.scissors_button.pack(side=tk.LEFT, padx=5)
 
         # Result label
         self.result_label = tk.Label(self.root, text="", font=("Helvetica", 12))
         self.result_label.pack(pady=10)
 
-        self.score_label = tk.Label(self.root, text=f"Score: {self.player.name}: {self.player.get_player_score()} | Computer: {self.computer.get_computer_score()}", font=("Helvetica", 12))
+        # Score label
+        self.score_label = tk.Label(self.root, text="", font=("Helvetica", 12))
         self.score_label.pack(pady=10)
+
+        self.winner_label = tk.Label(self.root, text="", font=("Helvetica", 12))
+        self.winner_label.pack(pady=10)
+
+        self.display_label = tk.Label(self.root, text="", font=("Helvetica", 12))
+        self.display_label.pack(pady=10)
+
+        self.replay_button = tk.Button(self.buttons_frame, text="Replay (Only click after round is over)?", command=lambda: self.play_again(True))
+        self.replay_button.pack(side=tk.LEFT, padx=5)
+
+        self.no_button = tk.Button(self.buttons_frame, text="No", command=lambda: self.play_again(False))
+        self.no_button.pack(side=tk.LEFT, padx=5)
+
+        self.replay_label = tk.Label(self.root, text="", font=("Helvetica", 12))
+        self.replay_label.pack(pady=10)
