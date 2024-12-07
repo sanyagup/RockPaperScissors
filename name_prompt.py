@@ -28,3 +28,25 @@ class NamePrompt:
 
     def get_name(self):
         return self.name
+    
+def main():
+    """
+    Main function to test the NamePrompt class.
+    """
+    # Initialize the main Tkinter root window
+    root = tk.Tk()
+    name_prompt = NamePrompt(root)
+
+    # Start the Tkinter event loop
+    root.mainloop()
+
+    # Test the get_name() function
+    user_name = name_prompt.get_name()
+
+    if user_name:
+        print(f"Name entered: {user_name}")
+    else:
+        print("No name entered or the input was empty.")
+
+if __name__ == "__main__":
+    main()
