@@ -1,3 +1,6 @@
+from computer import Computer
+from gesture import Gesture
+from player import Player
 from round import Round
 import tkinter as tk
 from tkinter import messagebox
@@ -208,4 +211,37 @@ class Game:
         self.replay_label = tk.Label(self.root, text="", font=("Helvetica", 12))
         self.replay_label.pack(pady=10)
         self.replay_button.pack_forget()
-        
+
+def main():
+    root = tk.Tk()
+    root.geometry("800x600")
+
+    # Mock player and computer
+    
+    computer = Computer()
+    gesture = Gesture()
+    player = Player("TestPlayer", "")
+
+    # Instantiate the Game class
+    game = Game(root, player, computer, gesture)
+
+    # Test the `start` method, which runs the GUI
+    game.start()
+
+    # At this point, manually testing GUI inputs verifies:
+    # - play_round()
+    # - update_score()
+    # - handle_player_move()
+    # - end_game()
+    # - display_leaderboard()
+    # - play_again()
+
+    # After GUI is closed, print the results to test other methods
+    print("Testing Game Results:")
+    print(f"Player's Final Score: {player.get_player_score()}")
+    print(f"Computer's Final Score: {computer.get_computer_score()}")
+    print(f"Player's Wins: {player.get_player_wins()}")
+    print(f"Computer's Wins: {computer.get_computer_wins()}")
+
+if __name__ == "__main__":
+    main()
