@@ -144,6 +144,7 @@ class Game:
                 self.replay_label.config(text=" ")
                 self.end_game()
                 self.replay_button.pack(side=tk.LEFT, padx=5)  # Show the button on round 3
+                self.no_button.pack(side=tk.LEFT, padx=5)  # Show the button on round 3
 
             self.root.wait_variable(self.choice)
 
@@ -202,6 +203,7 @@ class Game:
 
         self.no_button = tk.Button(self.buttons_frame, text="No", command=lambda: self.play_again(False))
         self.no_button.pack(side=tk.LEFT, padx=5)
+        self.no_button.pack_forget()
 
         self.replay_label = tk.Label(self.root, text="", font=("Helvetica", 12))
         self.replay_label.pack(pady=10)
