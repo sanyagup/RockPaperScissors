@@ -47,8 +47,6 @@ class Computer:
     def set_computer_score(self, score):
         '''Changes computer score'''
         self.score = score
-
-
     
 def main():
     """

@@ -15,7 +15,7 @@ class Game:
         self.computer = computer
         self.current_round = 1
         self.gesture = gesture
-        self.choice = 'yes'
+        self.choice = tk.StringVar(value="yes")
         self.winner = ''
 
     def play_round(self):
@@ -101,9 +101,8 @@ class Game:
         self.display_leaderboard()
 
     def play_again(self, flag):
-        """Handles the replay or exit decision via buttons."""
-        if flag:
-            self.set_choice('yes')
+        if flag == True:
+            self.choice.set("yes")
             self.replay_label.config(text="Starting a new game!")
             self.current_round = 1
             self.player.set_player_score(0)
@@ -112,10 +111,10 @@ class Game:
             self.winner_label.config(text="")
             self.start()
         else:
-            self.set_choice('no')
+            self.choice.set("no")
             self.replay_label.config(text="Thank you for playing!")
-            self.root.quit()
-            self.root.destroy()
+            self.root.destroy()  # Close GUI completely
+
 
     def display_leaderboard(self):
         """Displays the final score of both player and computer."""
@@ -142,14 +141,14 @@ class Game:
                 self.root.update()  # Allow GUI updates during rounds
 
             if self.current_round > self.rounds:
+                self.replay_label.config(text=" ")
                 self.end_game()
+                self.replay_button.pack(side=tk.LEFT, padx=5)  # Show the button on round 3
 
             self.root.wait_variable(self.choice)
 
-            if self.get_choice() == 'no':
+            if self.choice.get() == "no":
                 break
-
-        self.root.destroy()  # Close GUI completely
 
     def setup_gui(self):
         """Sets up initial GUI for game"""
@@ -206,3 +205,5 @@ class Game:
 
         self.replay_label = tk.Label(self.root, text="", font=("Helvetica", 12))
         self.replay_label.pack(pady=10)
+        self.replay_button.pack_forget()
+        

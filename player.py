@@ -23,6 +23,9 @@ class Player:
     
     def get_player_wins(self):
         return self.wins
+    
+    def set_player_name(self, new_name):
+        self.name = new_name
 
     def update_player_score(self):
         """
@@ -47,8 +50,6 @@ class Player:
     def set_player_score(self, score):
         self.score = score
 
-from gesture import Gesture  # Assuming a Gesture class with necessary methods
-from player import Player  # Importing the Player class
 
 def main():
     """
