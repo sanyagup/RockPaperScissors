@@ -89,3 +89,52 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+from gesture import Gesture  # Import the Gesture class
+from computer import Computer  # Import the Computer class
+
+def main():
+    """
+    Tests the Computer class methods, including update_computer_score, 
+    increase_computer_wins, get_computer_score, and get_computer_wins.
+
+    This function:
+        1. Initializes a Computer object.
+        2. Simulates moves made by the computer using Gesture methods.
+        3. Tests updating and retrieving the computer's score.
+        4. Tests incrementing and retrieving the computer's wins.
+        5. Displays results at each step.
+    """
+    # Step 1: Initialize the Computer and Gesture objects
+    computer = Computer()
+    gesture = Gesture()
+    
+    # Display initial computer details
+    print("--- Initial Computer Details ---")
+    print(computer)
+
+    # Step 2: Test the computer's gesture move
+    move = gesture.make_move()
+    print(f"Computer's chosen move: {move}")
+
+    # Step 3: Update the computer's score and display it
+    updated_score = computer.update_computer_score()
+    print(f"Updated computer score: {updated_score}")
+    print(computer)  # Verify updated state
+
+    # Step 4: Increment computer wins and display it
+    computer.increase_computer_wins()
+    print(f"Computer wins: {computer.get_computer_wins()}")
+
+    # Step 5: Test set_computer_score method
+    computer.set_computer_score(5)
+    print(f"Manually set computer score to: {computer.get_computer_score()}")
+
+    # Final display
+    print("--- Final Computer Details ---")
+    print(computer)
+
+if __name__ == "__main__":
+    main()

@@ -77,3 +77,43 @@ class Gesture:
             return "win"
         else:
             return "lose"
+        
+def main():
+    """
+    Tests the Gesture class methods, including validate_move, return_random_gesture, 
+    choose_gesture, make_move, and compare_gestures.
+    """
+    # Step 1: Initialize the Gesture object
+    gesture_obj = Gesture()
+    
+    # Step 2: Test get_GESTURES method
+    print("Available gestures:", gesture_obj.get_GESTURES())
+    
+    # Step 3: Test validate_move method
+    test_gesture = "rock"
+    print(f"Is '{test_gesture}' a valid move? {gesture_obj.validate_move(test_gesture)}")
+    
+    invalid_gesture = "fire"
+    print(f"Is '{invalid_gesture}' a valid move? {gesture_obj.validate_move(invalid_gesture)}")
+    
+    # Step 4: Test return_random_gesture method
+    random_gesture = gesture_obj.return_random_gesture()
+    print(f"Randomly selected gesture: {random_gesture}")
+    
+    # Step 5: Test choose_gesture method (uncomment this to allow user input)
+    # print("Let's choose a gesture:")
+    # chosen_gesture = gesture_obj.choose_gesture()
+    # print(f"You chose: {chosen_gesture}")
+    
+    # Step 6: Test make_move method
+    computer_gesture = gesture_obj.make_move()
+    print(f"Computer's move: {computer_gesture}")
+    
+    # Step 7: Test compare_gestures method
+    player_gesture = "rock"
+    print(f"Comparing gestures: Player - {player_gesture}, Computer - {computer_gesture}")
+    result = gesture_obj.compare_gestures(player_gesture, computer_gesture)
+    print(f"Result: {result}")
+
+if __name__ == "__main__":
+    main()
